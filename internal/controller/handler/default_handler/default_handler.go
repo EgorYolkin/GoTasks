@@ -20,10 +20,10 @@ func DefaultHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	stg, _ := ctx.Value("stg").(storage.StorageModel)
 
-	err := user_usecase.CreateUserIfNotExist(ctx, stg, &u)
+	uc := user_usecase.UserUsecase{Storage: stg}
+	err := uc.CreateUserIfNotExist(ctx, stg, &u)
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	isLink := data_usecase.IsLink(update.Message.Text)
