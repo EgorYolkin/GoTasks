@@ -21,7 +21,7 @@ func DefaultHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 	stg, _ := ctx.Value("stg").(storage.StorageModel)
 
 	uc := user_usecase.UserUsecase{Storage: stg}
-	err := uc.CreateUserIfNotExist(ctx, stg, &u)
+	err := uc.CreateUserIfNotExist(ctx, &u)
 	if err != nil {
 		panic(err)
 	}

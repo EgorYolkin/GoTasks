@@ -9,8 +9,10 @@ import (
 	"github.com/go-telegram/bot"
 
 	"gotasks/config"
+	
 	"gotasks/internal/controller/handler/default_handler"
 	"gotasks/internal/controller/handler/start_handler"
+	"gotasks/internal/controller/handler/get_data_handler"
 )
 
 func Run(cfg *config.Config) {
@@ -42,6 +44,13 @@ func Run(cfg *config.Config) {
 		"/hello",
 		bot.MatchTypeExact,
 		start_handler.StartHandler,
+	)
+	
+	b.RegisterHandler(
+		bot.HandlerTypeMessageText,
+		"/get",
+		bot.MatchTypeExact,
+		get_data_handler.GetDataHandler,
 	)
 
 	b.Start(ctx)

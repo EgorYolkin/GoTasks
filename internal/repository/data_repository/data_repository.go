@@ -1,4 +1,4 @@
-package datarepository
+package data_repository
 
 import (
 	"context"
@@ -13,61 +13,69 @@ type DataRepository struct {
 	Storage storage.StorageModel
 }
 
+func NewDataRepository(storage storage.StorageModel) *DataRepository {
+	return &DataRepository{
+		Storage: storage,
+	}
+}
+
 func (dr *DataRepository) AddData(
 	ctx context.Context,
 	d *entity.Data,
 ) (int, error) {
 	q := fmt.Sprintf(`
     	INSERT INTO %s
-        (link, note, added_at)
+        (user, link, note, added_at)
         VALUES
-        (?, ?, ?)
+        (?, ?, ?, ?)
     	`,
 		postgres.DataTable,
 	)
 
 	stmt, err := dr.Storage.DB.Prepare(q)
 	if err != nil {
-	    return 0, err
+		return 0, err
 	}
 
-	res, err := stmt.Exec(d.Link, d.Note, d.AddedAt)
+	res, err := stmt.Exec(d.User, d.Link, d.Note, d.AddedAt)
 	if err != nil {
-	   return 0, err
+		return 0, err
 	}
 
 	lid, err := res.LastInsertId()
 	if err != nil {
-	   return 0, err
+		return 0, err
 	}
 
 	return int(lid), nil
 }
 
-func (ur *DataRepository) GetData(
+func (ur *DataRepository) GetRandomData(
 	ctx context.Context,
-	did uint64,
+	uid uint64,
 ) (d entity.Data, err error) {
-    q := fmt.Sprintf(
-        `
+	q := fmt.Sprintf(
+		`
             SELECT *
             FROM
                 %s
             WHERE
-                id=%d
+                user=%d
+            ORDER BY RAND()
+            LIMIT 1;
         `,
-        postgres.DataTable,
-        did,
-    )
+		postgres.DataTable,
+		uid,
+	)
 
 	rows, err := ur.Storage.DB.Query(q)
 	if err != nil {
 		return
 	}
 	defer rows.Close()
-	
+
 	data := entity.Data{}
-	
+
 	if err = rows.Scan(
 		&data.ID,
 		&data.Link,
@@ -76,7 +84,7 @@ func (ur *DataRepository) GetData(
 	); err != nil {
 		return
 	}
-	
+
 	return
 }
 
@@ -109,5 +117,5 @@ func (ur *DataRepository) DeleteData(
 	ctx context.Context,
 	did uint64,
 ) {
-	
+
 }
