@@ -18,7 +18,7 @@ func (uc *UserUsecase) CreateUserIfNotExist(
 ) error {
 	repo := user_repository.NewUserRepository(uc.Storage)
 
-	if err := repo.CreateUser(ctx, u); err != nil {
+	if err := repo.CreateUser(ctx, *u); err != nil {
 		return err
 	}
 

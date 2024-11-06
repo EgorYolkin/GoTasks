@@ -16,10 +16,13 @@ func GetDataHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
     
     answer, err := dc.GetRandomData(ctx, uint64(update.Message.From.ID))
     
+    if len(answer) == 0 {
+        answer = "Кажется, данных нет"
+    }
 	_, err = b.SendMessage(ctx, &bot.SendMessageParams{
 		ChatID:    update.Message.Chat.ID,
 		Text:      answer,
-		ParseMode: models.ParseModeMarkdown,
+		
 	})
 
 	if err != nil {

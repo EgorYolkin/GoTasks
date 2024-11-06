@@ -14,6 +14,19 @@ type DataUsecase struct {
     Storage storage.StorageModel
 }
 
+func (du *DataUsecase) AddData(
+    ctx context.Context,
+    data entity.Data,
+) (error) {
+    repo := data_repository.NewDataRepository(du.Storage)
+    
+    if err := repo.AddData(ctx, data); err != nil {
+        return err
+    }
+    return nil
+}
+
+
 func (du *DataUsecase) GetRandomData(
     ctx context.Context,
     uid uint64,
@@ -26,14 +39,9 @@ func (du *DataUsecase) GetRandomData(
     }
     
     t := time.Unix(int64(data.AddedAt), 0)
-	fmt.Println()
     
     answer := fmt.Sprintf(
-        `
-            📎 %s\n
-            📖 %s\n
-            🗓️ %s
-        `, 
+        "📎 %s\n📖 %s\n🗓️ %s", 
         data.Link,
         data.Note,
         t.Format("2 January, 2006"),

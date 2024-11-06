@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	
 	"gotasks/internal/repository/postgres"
 	"os"
 	"os/signal"
@@ -9,10 +10,10 @@ import (
 	"github.com/go-telegram/bot"
 
 	"gotasks/config"
-	
+
 	"gotasks/internal/controller/handler/default_handler"
-	"gotasks/internal/controller/handler/start_handler"
 	"gotasks/internal/controller/handler/get_data_handler"
+	"gotasks/internal/controller/handler/start_handler"
 )
 
 func Run(cfg *config.Config) {
@@ -41,7 +42,7 @@ func Run(cfg *config.Config) {
 
 	b.RegisterHandler(
 		bot.HandlerTypeMessageText,
-		"/hello",
+		"/start",
 		bot.MatchTypeExact,
 		start_handler.StartHandler,
 	)

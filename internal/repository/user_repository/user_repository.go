@@ -21,7 +21,7 @@ func NewUserRepository(storage storage.StorageModel) *UserRepository {
 
 func (ur *UserRepository) CreateUser(
 	ctx context.Context,
-	u *entity.User,
+	u entity.User,
 ) error {
 	q := fmt.Sprintf(`
     	INSERT INTO %s

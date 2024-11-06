@@ -21,33 +21,22 @@ func NewDataRepository(storage storage.StorageModel) *DataRepository {
 
 func (dr *DataRepository) AddData(
 	ctx context.Context,
-	d *entity.Data,
-) (int, error) {
+	d entity.Data,
+) error {
 	q := fmt.Sprintf(`
     	INSERT INTO %s
-        (user, link, note, added_at)
+        ("user", link, note, added_at)
         VALUES
-        (?, ?, ?, ?)
+        (%d, '%s', '%s', %d)
     	`,
 		postgres.DataTable,
+		d.User, d.Link, d.Note, d.AddedAt,
 	)
 
-	stmt, err := dr.Storage.DB.Prepare(q)
-	if err != nil {
-		return 0, err
+	if _, err := dr.Storage.DB.Exec(q); err != nil {
+		return err
 	}
-
-	res, err := stmt.Exec(d.User, d.Link, d.Note, d.AddedAt)
-	if err != nil {
-		return 0, err
-	}
-
-	lid, err := res.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(lid), nil
+	return nil
 }
 
 func (ur *DataRepository) GetRandomData(
@@ -60,12 +49,12 @@ func (ur *DataRepository) GetRandomData(
             FROM
                 %s
             WHERE
-                user=%d
-            ORDER BY RAND()
+                "user"=%d
+            ORDER BY RANDOM()
             LIMIT 1;
         `,
 		postgres.DataTable,
-		uid,
+		int(uid),
 	)
 
 	rows, err := ur.Storage.DB.Query(q)
@@ -76,16 +65,19 @@ func (ur *DataRepository) GetRandomData(
 
 	data := entity.Data{}
 
-	if err = rows.Scan(
-		&data.ID,
-		&data.Link,
-		&data.Note,
-		&data.AddedAt,
-	); err != nil {
-		return
+	for rows.Next() {
+		if err = rows.Scan(
+			&data.ID,
+			&data.User,
+			&data.Link,
+			&data.Note,
+			&data.AddedAt,
+		); err != nil {
+			return entity.Data{}, err
+		}
 	}
 
-	return
+	return data, nil
 }
 
 func (ur *DataRepository) GetAllData() (all_data []entity.Data, err error) {
