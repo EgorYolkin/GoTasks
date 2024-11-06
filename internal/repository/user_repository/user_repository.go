@@ -28,7 +28,7 @@ func (ur *UserRepository) CreateUser(
         (telegram_id, created_at)
         VALUES
         (%d, %d)
-    	ON CONFLICT (telegram_id) 
+    	ON CONFLICT (telegram_id)
     	    DO NOTHING;
     	`,
 		postgres.UsersTable,

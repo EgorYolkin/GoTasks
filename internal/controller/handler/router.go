@@ -2,10 +2,11 @@ package handler
 
 import (
 	"context"
-	"github.com/go-telegram/bot"
-	"github.com/go-telegram/bot/models"
 	"gotasks/internal/controller/handler/default_handler"
 	"gotasks/internal/controller/handler/start_handler"
+
+	"github.com/go-telegram/bot"
+	"github.com/go-telegram/bot/models"
 )
 
 type Router struct {

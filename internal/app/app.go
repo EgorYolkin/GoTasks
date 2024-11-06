@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	
+
 	"gotasks/internal/repository/postgres"
 	"os"
 	"os/signal"
@@ -46,7 +46,7 @@ func Run(cfg *config.Config) {
 		bot.MatchTypeExact,
 		start_handler.StartHandler,
 	)
-	
+
 	b.RegisterHandler(
 		bot.HandlerTypeMessageText,
 		"/get",
