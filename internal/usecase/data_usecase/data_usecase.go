@@ -18,9 +18,9 @@ func (du *DataUsecase) AddData(
 	ctx context.Context,
 	data entity.Data,
 ) error {
-	repo := data_repository.NewDataRepository(du.Storage)
+	repo := data_repository.NewRepository(du.Storage)
 
-	if err := repo.AddData(ctx, data); err != nil {
+	if err := repo.Create(ctx, data); err != nil {
 		return err
 	}
 	return nil
@@ -30,8 +30,8 @@ func (du *DataUsecase) GetRandomData(
 	ctx context.Context,
 	uid uint64,
 ) (string, error) {
-	repo := data_repository.NewDataRepository(du.Storage)
-	data, err := repo.GetRandomData(ctx, uid)
+	repo := data_repository.NewRepository(du.Storage)
+	data, err := repo.GetOne(ctx, uid)
 
 	if err != nil {
 		return "", err

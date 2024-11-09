@@ -1,18 +1,14 @@
 package main
 
 import (
-	"os"
-	"fmt"
-
 	"gotasks/config"
 	"gotasks/internal/app"
 )
 
 func main() {
-	cfg := config.Config{
-		TelegramApiKey: os.Getenv("TELEGRAM_API_KEY"),
-		DSN:            "user=root password=4806 host=localhost dbname=home sslmode=disable",
+	cfg, err := config.NewConfig("configuration.yaml")
+	if err != nil {
+	   panic(err)
 	}
-	fmt.Println("Start!")
-	app.Run(&cfg)
+	app.Run(cfg)
 }

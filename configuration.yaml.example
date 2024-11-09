@@ -1,0 +1,4 @@
+bot: 
+    TELEGRAM_API_KEY: "key"
+database: 
+    DSN: "user=user password=pwd host=localhost dbname=dbname sslmode=disable"

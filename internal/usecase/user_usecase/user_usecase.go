@@ -16,9 +16,9 @@ func (uc *UserUsecase) CreateUserIfNotExist(
 	ctx context.Context,
 	u *entity.User,
 ) error {
-	repo := user_repository.NewUserRepository(uc.Storage)
+	repo := user_repository.NewRepository(uc.Storage)
 
-	if err := repo.CreateUser(ctx, *u); err != nil {
+	if err := repo.Create(ctx, *u); err != nil {
 		return err
 	}
 

@@ -13,13 +13,13 @@ type UserRepository struct {
 	Storage storage.StorageModel
 }
 
-func NewUserRepository(storage storage.StorageModel) *UserRepository {
+func NewRepository(storage storage.StorageModel) *UserRepository {
 	return &UserRepository{
 		Storage: storage,
 	}
 }
 
-func (ur *UserRepository) CreateUser(
+func (ur *UserRepository) Create(
 	ctx context.Context,
 	u entity.User,
 ) error {
@@ -41,14 +41,14 @@ func (ur *UserRepository) CreateUser(
 	return nil
 }
 
-func (ur *UserRepository) GetUser(
+func (ur *UserRepository) GetOne(
 	ctx context.Context,
 	uid uint64,
 ) {
 
 }
 
-func (ur *UserRepository) GetAllUser() (users []entity.User, err error) {
+func (ur *UserRepository) GetAll() (users []entity.User, err error) {
 	q := fmt.Sprintf("SELECT * FROM %s", postgres.UsersTable)
 
 	rows, err := ur.Storage.DB.Query(q)
@@ -70,7 +70,7 @@ func (ur *UserRepository) GetAllUser() (users []entity.User, err error) {
 	return
 }
 
-func (ur *UserRepository) DeleteUser(
+func (ur *UserRepository) Delete(
 	ctx context.Context,
 	uid uint64,
 ) {

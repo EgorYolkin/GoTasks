@@ -13,13 +13,13 @@ type DataRepository struct {
 	Storage storage.StorageModel
 }
 
-func NewDataRepository(storage storage.StorageModel) *DataRepository {
+func NewRepository(storage storage.StorageModel) *DataRepository {
 	return &DataRepository{
 		Storage: storage,
 	}
 }
 
-func (dr *DataRepository) AddData(
+func (dr *DataRepository) Create(
 	ctx context.Context,
 	d entity.Data,
 ) error {
@@ -39,10 +39,10 @@ func (dr *DataRepository) AddData(
 	return nil
 }
 
-func (ur *DataRepository) GetRandomData(
+func (ur *DataRepository) GetOne(
 	ctx context.Context,
 	uid uint64,
-) (d entity.Data, err error) {
+) (d *entity.Data, err error) {
 	q := fmt.Sprintf(
 		`
             SELECT *
@@ -65,7 +65,7 @@ func (ur *DataRepository) GetRandomData(
 
 	data := entity.Data{}
 
-	for rows.Next() {
+	if rows.Next() {
 		if err = rows.Scan(
 			&data.ID,
 			&data.User,
@@ -73,14 +73,16 @@ func (ur *DataRepository) GetRandomData(
 			&data.Note,
 			&data.AddedAt,
 		); err != nil {
-			return entity.Data{}, err
+			return nil, err
 		}
+	} else {
+		return nil, fmt.Errorf("Data not found")
 	}
 
-	return data, nil
+	return &data, nil
 }
 
-func (ur *DataRepository) GetAllData() (all_data []entity.Data, err error) {
+func (ur *DataRepository) GetAll() (all_data []entity.Data, err error) {
 	q := fmt.Sprintf("SELECT * FROM %s", postgres.DataTable)
 
 	rows, err := ur.Storage.DB.Query(q)
@@ -105,7 +107,7 @@ func (ur *DataRepository) GetAllData() (all_data []entity.Data, err error) {
 	return
 }
 
-func (ur *DataRepository) DeleteData(
+func (ur *DataRepository) Delete(
 	ctx context.Context,
 	did uint64,
 ) {
