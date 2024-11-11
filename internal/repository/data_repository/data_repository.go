@@ -111,5 +111,5 @@ func (ur *DataRepository) Delete(
 	ctx context.Context,
 	did uint64,
 ) {
-
+    
 }

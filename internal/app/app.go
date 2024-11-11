@@ -1,21 +1,30 @@
 package app
 
 import (
-    "os"
-	"os/signal"
 	"context"
+	"fmt"
+	"os"
+	"os/signal"
 
 	"github.com/go-telegram/bot"
-	
+
 	"gotasks/config"
-	"gotasks/internal/repository/postgres"
 	"gotasks/internal/controller/handler/default_handler"
 	"gotasks/internal/controller/handler/get_data_handler"
 	"gotasks/internal/controller/handler/start_handler"
+	"gotasks/internal/repository/postgres"
 )
 
 func Run(cfg config.Config) {
-	stg, err := postgres.Connect(cfg.Database.DSN)
+	connection := fmt.Sprintf(
+		"user=%s password=%s host=%s dbname=%s sslmode=%s",
+		cfg.Database.User,
+		cfg.Database.Password,
+		cfg.Database.Host,
+		cfg.Database.DBName,
+		cfg.Database.Sslmode,
+	)
+	stg, err := postgres.Connect(connection)
 	if err != nil {
 		panic(err)
 	}
@@ -51,6 +60,6 @@ func Run(cfg config.Config) {
 		bot.MatchTypeExact,
 		get_data_handler.GetDataHandler,
 	)
-	
+
 	b.Start(ctx)
 }

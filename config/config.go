@@ -15,7 +15,11 @@ type Config struct {
 		TelegramApiKey string `yaml:"telegram_api_key"`
 	} `yaml:"bot"`
 	Database struct {
-		DSN string `yaml:"dsn"`
+		User     string `yaml:"user"`
+		Password string `yaml:"password"`
+		Host     string `yaml:"host"`
+		DBName   string `yaml:"dbname"`
+		Sslmode  string `yaml:"sslmode"`
 	} `yaml:"database"`
 }
 

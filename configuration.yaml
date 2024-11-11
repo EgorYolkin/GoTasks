@@ -1,4 +1,8 @@
 bot:
-    telegram_api_key: "7365186477:AAFC1Je8bu2N0vgarhpPTr80_EzB7k83U4A"
+    telegram_api_key: 7365186477:AAFC1Je8bu2N0vgarhpPTr80_EzB7k83U4A
 database:
-    dsn: "user=root password=4806 host=localhost dbname=home sslmode=disable"
+    user: root
+    password: 4806
+    host: localhost
+    dbname: home
+    sslmode: "disable"
