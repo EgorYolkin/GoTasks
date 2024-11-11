@@ -59,5 +59,7 @@ func (du *DataUsecase) GetRandomData(
 		t.Format("2 January, 2006"),
 	)
 
+	repo.Delete(ctx, data.ID)
+
 	return answer, nil
 }
