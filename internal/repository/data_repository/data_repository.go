@@ -39,7 +39,7 @@ func (dr *DataRepository) Create(
 	return nil
 }
 
-func (ur *DataRepository) GetOne(
+func (dr *DataRepository) GetOne(
 	ctx context.Context,
 	uid uint64,
 ) (d *entity.Data, err error) {
@@ -57,7 +57,7 @@ func (ur *DataRepository) GetOne(
 		int(uid),
 	)
 
-	rows, err := ur.Storage.DB.Query(q)
+	rows, err := dr.Storage.DB.Query(q)
 	if err != nil {
 		return
 	}
@@ -82,10 +82,10 @@ func (ur *DataRepository) GetOne(
 	return &data, nil
 }
 
-func (ur *DataRepository) GetAll() (all_data []entity.Data, err error) {
+func (dr *DataRepository) GetAll() (all_data []entity.Data, err error) {
 	q := fmt.Sprintf("SELECT * FROM %s", postgres.DataTable)
 
-	rows, err := ur.Storage.DB.Query(q)
+	rows, err := dr.Storage.DB.Query(q)
 	if err != nil {
 		return nil, err
 	}
@@ -107,9 +107,20 @@ func (ur *DataRepository) GetAll() (all_data []entity.Data, err error) {
 	return
 }
 
-func (ur *DataRepository) Delete(
+func (dr *DataRepository) Delete(
 	ctx context.Context,
 	did uint64,
-) {
-    
+) error {
+	q := fmt.Sprintf(`
+       	DELETE FROM %s
+        WHERE id=%d
+       	`,
+		postgres.DataTable,
+		did,
+	)
+
+	if _, err := dr.Storage.DB.Exec(q); err != nil {
+		return err
+	}
+	return nil
 }

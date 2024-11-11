@@ -26,6 +26,19 @@ func (du *DataUsecase) AddData(
 	return nil
 }
 
+func (du *DataUsecase) DeleteData(
+	ctx context.Context,
+	did uint64,
+) error {
+	repo := data_repository.NewRepository(du.Storage)
+
+	if err := repo.Delete(ctx, did); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (du *DataUsecase) GetRandomData(
 	ctx context.Context,
 	uid uint64,
