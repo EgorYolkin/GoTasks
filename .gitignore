@@ -20,6 +20,6 @@
 # Go workspace file
 go.work
 go.work.sum
-
+configuration.yaml
 # env file
 .env
