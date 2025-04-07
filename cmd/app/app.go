@@ -3,28 +3,27 @@ package app
 import (
 	"context"
 	"fmt"
+	"gotasks/internal/repository/database/postgres"
 	"os"
 	"os/signal"
 
 	"github.com/go-telegram/bot"
 
-	"gotasks/config"
 	"gotasks/internal/controller/handler/default_handler"
 	"gotasks/internal/controller/handler/get_data_handler"
 	"gotasks/internal/controller/handler/start_handler"
-	"gotasks/internal/repository/postgres"
+	"gotasks/internal/di/di_config"
 )
 
-func Run(cfg config.Config) {
-	connection := fmt.Sprintf(
-		"user=%s password=%s host=%s dbname=%s sslmode=%s",
+func Run(cfg *di_config.Config) {
+	dsn := fmt.Sprintf(
+		"user_usecase=%s password=%s host=%s dbname=%s sslmode=disable",
 		cfg.Database.User,
 		cfg.Database.Password,
 		cfg.Database.Host,
 		cfg.Database.DBName,
-		cfg.Database.Sslmode,
 	)
-	stg, err := postgres.Connect(connection)
+	stg, err := postgres.Connect(dsn)
 	if err != nil {
 		panic(err)
 	}

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"gotasks/internal/repository/storage"
-	"gotasks/internal/usecase/data"
+	"gotasks/internal/usecase/data_usecase"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -12,7 +12,7 @@ import (
 
 func GetDataHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 	stg, _ := ctx.Value("stg").(storage.StorageModel)
-	dc := data.DataUsecase{Storage: stg}
+	dc := data_usecase.DataUsecase{Storage: stg}
 
 	answer, err := dc.GetRandomData(ctx, uint64(update.Message.From.ID))
 

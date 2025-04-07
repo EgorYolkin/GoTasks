@@ -2,11 +2,17 @@ package main
 
 import (
 	"gotasks/cmd/app"
-	"gotasks/config"
+	"gotasks/internal/di/di_config"
+	"os"
 )
 
 func main() {
-	cfg, err := config.NewConfig("configuration.yaml")
+	envFilePath := os.Getenv("ENV_FILE_PATH")
+	if envFilePath == "" {
+		panic("ENV_FILE_PATH environment variable not set")
+	}
+
+	cfg, err := di_config.InitializeConfig(envFilePath)
 	if err != nil {
 		panic(err)
 	}

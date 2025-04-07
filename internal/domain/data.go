@@ -1,4 +1,4 @@
-package entity
+package domain
 
 type Data struct {
 	ID      uint64 `json:"id"`

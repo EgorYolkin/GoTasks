@@ -8,8 +8,10 @@ import (
 	"gotasks/internal/repository/storage"
 )
 
-var UsersTable string = "s_users"
-var DataTable string = "data"
+const (
+	UsersTable string = "s_users"
+	DataTable         = "data_usecase"
+)
 
 func Connect(dsn string) (storage.StorageModel, error) {
 	db, err := sql.Open("postgres", dsn)

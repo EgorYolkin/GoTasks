@@ -6,19 +6,19 @@ import (
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
 
-	"gotasks/internal/entity"
+	"gotasks/internal/domain"
 	"gotasks/internal/repository/storage"
-	"gotasks/internal/usecase/user"
+	"gotasks/internal/usecase/user_usecase"
 )
 
 func StartHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
-	u := entity.User{
+	u := domain.User{
 		TelegramId: int(update.Message.From.ID),
 	}
 
 	stg, _ := ctx.Value("stg").(storage.StorageModel)
 
-	uc := user.UserUsecase{Storage: stg}
+	uc := user_usecase.UserUsecase{Storage: stg}
 	err := uc.CreateUserIfNotExist(ctx, &u)
 	if err != nil {
 		panic(err)

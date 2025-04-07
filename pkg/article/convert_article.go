@@ -1,11 +1,11 @@
-package data
+package article
 
 func uriToFile(uri string) (path string) {
-	return
+	return "/"
 }
 
 func ConvertArticle(uri string) (path string) {
 	filePath := uriToFile(uri)
 
-	return ""
+	return filePath
 }
