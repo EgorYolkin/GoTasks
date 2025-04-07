@@ -1,8 +1,0 @@
-bot:
-    telegram_api_key: str
-database:
-    user: user
-    password: "pwd
-    host: localhost
-    dbname: home
-    sslmode: "disable"

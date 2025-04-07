@@ -1,4 +1,4 @@
-package data_usecase
+package data
 
 import (
 	"context"
@@ -7,20 +7,17 @@ import (
 
 	"gotasks/internal/entity"
 	"gotasks/internal/repository/data_repository"
-	"gotasks/internal/repository/storage"
 )
 
 type DataUsecase struct {
-	Storage storage.StorageModel
+	Repo data_repository.DataRepository
 }
 
 func (du *DataUsecase) AddData(
 	ctx context.Context,
 	data entity.Data,
 ) error {
-	repo := data_repository.NewRepository(du.Storage)
-
-	if err := repo.Create(ctx, data); err != nil {
+	if err := du.Repo.Create(ctx, data); err != nil {
 		return err
 	}
 	return nil
@@ -30,9 +27,7 @@ func (du *DataUsecase) DeleteData(
 	ctx context.Context,
 	did uint64,
 ) error {
-	repo := data_repository.NewRepository(du.Storage)
-
-	if err := repo.Delete(ctx, did); err != nil {
+	if err := du.Repo.Delete(ctx, did); err != nil {
 		return err
 	}
 
@@ -43,8 +38,7 @@ func (du *DataUsecase) GetRandomData(
 	ctx context.Context,
 	uid uint64,
 ) (string, error) {
-	repo := data_repository.NewRepository(du.Storage)
-	data, err := repo.GetOne(ctx, uid)
+	data, err := du.Repo.GetOne(ctx, uid)
 
 	if err != nil {
 		return "", err
@@ -59,7 +53,11 @@ func (du *DataUsecase) GetRandomData(
 		t.Format("2 January, 2006"),
 	)
 
-	repo.Delete(ctx, data.ID)
+	err = du.Repo.Delete(ctx, data.ID)
+
+	if err != nil {
+		return "", err
+	}
 
 	return answer, nil
 }

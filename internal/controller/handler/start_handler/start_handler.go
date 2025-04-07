@@ -8,23 +8,23 @@ import (
 
 	"gotasks/internal/entity"
 	"gotasks/internal/repository/storage"
-	"gotasks/internal/usecase/user_usecase"
+	"gotasks/internal/usecase/user"
 )
 
 func StartHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
-    u := entity.User{
+	u := entity.User{
 		TelegramId: int(update.Message.From.ID),
 	}
 
 	stg, _ := ctx.Value("stg").(storage.StorageModel)
 
-	uc := user_usecase.UserUsecase{Storage: stg}
+	uc := user.UserUsecase{Storage: stg}
 	err := uc.CreateUserIfNotExist(ctx, &u)
 	if err != nil {
 		panic(err)
 	}
 
-    answer := "Здравствуй, *" +
+	answer := "Здравствуй, *" +
 		bot.EscapeMarkdown(update.Message.From.FirstName) +
 		"*\n\n" +
 		"Суть проста — отправляй мне ссылки на статьи/видео, " +

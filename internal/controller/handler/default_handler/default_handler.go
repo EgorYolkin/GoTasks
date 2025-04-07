@@ -10,13 +10,13 @@ import (
 
 	"gotasks/internal/entity"
 	"gotasks/internal/repository/storage"
-	"gotasks/internal/usecase/data_usecase"
+	"gotasks/internal/usecase/data"
 )
 
 func DefaultHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 	var answer string
 
-	isLink := data_usecase.IsLink(update.Message.Text)
+	isLink := data.IsLink(update.Message.Text)
 
 	if !isLink {
 		answer = "I think it's no link"
@@ -34,7 +34,7 @@ func DefaultHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 	}
 
 	stg, _ := ctx.Value("stg").(storage.StorageModel)
-	dc := data_usecase.DataUsecase{Storage: stg}
+	dc := data.DataUsecase{Storage: stg}
 
 	data := entity.Data{
 		User:    uint64(update.Message.From.ID),

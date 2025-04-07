@@ -3,7 +3,7 @@ package default_handler
 import (
 	"context"
 	"fmt"
-	"gotasks/internal/usecase/data_usecase"
+	"gotasks/internal/usecase/data"
 	"time"
 
 	"github.com/go-co-op/gocron/v2"
@@ -14,7 +14,7 @@ import (
 
 func CronTask(
 	ctx context.Context,
-	dc data_usecase.DataUsecase,
+	dc data.DataUsecase,
 	update *models.Update,
 	b bot.Bot,
 ) {
@@ -35,7 +35,7 @@ func CronTask(
 
 func ScheduleCron(
 	ctx context.Context,
-	dc data_usecase.DataUsecase,
+	dc data.DataUsecase,
 	update *models.Update,
 	b bot.Bot,
 ) {

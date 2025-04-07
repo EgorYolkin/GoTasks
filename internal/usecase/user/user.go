@@ -1,24 +1,22 @@
-package user_usecase
+package user
 
 import (
 	"context"
 
 	"gotasks/internal/entity"
-	"gotasks/internal/repository/storage"
 	"gotasks/internal/repository/user_repository"
 )
 
 type UserUsecase struct {
-	Storage storage.StorageModel
+	Repo user_repository.UserRepository
 }
 
 func (uc *UserUsecase) CreateUserIfNotExist(
 	ctx context.Context,
 	u *entity.User,
 ) error {
-	repo := user_repository.NewRepository(uc.Storage)
 
-	if err := repo.Create(ctx, *u); err != nil {
+	if err := uc.Repo.Create(ctx, *u); err != nil {
 		return err
 	}
 

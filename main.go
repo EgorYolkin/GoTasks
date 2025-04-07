@@ -1,14 +1,14 @@
 package main
 
 import (
+	"gotasks/cmd/app"
 	"gotasks/config"
-	"gotasks/internal/app"
 )
 
 func main() {
 	cfg, err := config.NewConfig("configuration.yaml")
 	if err != nil {
-	   panic(err)
+		panic(err)
 	}
 	app.Run(cfg)
 }

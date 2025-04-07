@@ -1,4 +1,4 @@
-package data_usecase
+package data
 
 import (
 	"regexp"
